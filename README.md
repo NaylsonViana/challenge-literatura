@@ -45,13 +45,32 @@ O **LiterAlura** é um sistema de catálogo de livros que consome a API gratuita
 
 ### 2. Configurar as Credenciais
 
-As credenciais do PostgreSQL já estão configuradas no arquivo `application.properties`:
+O projeto usa variáveis de ambiente para as credenciais do banco de dados por segurança.
 
-- **Username**: postgres
-- **Password**: 86410042
-- **Database**: literalura
+#### Opção 1: Variável de Ambiente (Recomendado)
 
-Se suas credenciais forem diferentes, edite o arquivo `src/main/resources/application.properties`.
+Configure a variável de ambiente `DB_PASSWORD`:
+
+```bash
+# Windows (PowerShell)
+$env:DB_PASSWORD="sua_senha_aqui"
+
+# Windows (CMD)
+set DB_PASSWORD=sua_senha_aqui
+
+# Linux/Mac
+export DB_PASSWORD=sua_senha_aqui
+```
+
+#### Opção 2: Editar application.properties
+
+Se preferir, edite o arquivo `src/main/resources/application.properties`:
+
+```properties
+spring.datasource.password=sua_senha_aqui
+```
+
+**⚠️ IMPORTANTE**: Nunca commite senhas no repositório Git!
 
 ### 3. Executar o Projeto
 
@@ -141,11 +160,12 @@ src/main/java/literatura/demo/
 # Configuração do PostgreSQL
 spring.datasource.url=jdbc:postgresql://localhost:5432/literalura
 spring.datasource.username=postgres
-spring.datasource.password=86410042
+spring.datasource.password=${DB_PASSWORD:postgres}
 
 # Configuração JPA
 spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=false
 
 # API Gutendex
 api.gutendex.base-url=https://gutendex.com/books
